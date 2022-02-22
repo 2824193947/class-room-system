@@ -3,6 +3,8 @@ package com.cdzy.service;
 import com.cdzy.dao.LoginMapper;
 import com.cdzy.pojo.Classroom;
 import com.cdzy.pojo.Student;
+import com.cdzy.pojo.Lecture;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +18,18 @@ public class LoginServiceImpl implements LoginService{
 
 
     @Override
-    public Student login(int id, String password) {
-        return loginMapper.login(id,password);
+    public Student login(String name, String password) {
+        return loginMapper.login(name,password);
     }
 
     @Override
     public int registered(String name, String password, String picture) {
         return loginMapper.registered(name,password,picture);
+    }
+
+    @Override
+    public int deleteUser(String name) {
+        return loginMapper.deleteUser(name);
     }
 
     @Override
@@ -60,5 +67,15 @@ public class LoginServiceImpl implements LoginService{
         return loginMapper.userQuery(name,password);
     }
 
+    @Override
+    public int addleature(String  lectureinfo, String classroomname) { return loginMapper.addleature(lectureinfo, classroomname); }
 
+    @Override
+    public int updateleature(String  lectureinfo, String classroomname) { return loginMapper.updateleature(lectureinfo, classroomname); }
+
+    @Override
+    public int deleteleature(String lectureinfo) { return loginMapper.deleteleature(lectureinfo); }
+
+    @Override
+    public ArrayList<Lecture> selectlecture() { return loginMapper.selectlecture(); }
 }

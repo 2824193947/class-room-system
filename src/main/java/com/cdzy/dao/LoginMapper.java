@@ -2,6 +2,9 @@ package com.cdzy.dao;
 
 import com.cdzy.pojo.Classroom;
 import com.cdzy.pojo.Student;
+import com.cdzy.pojo.Lecture;
+import com.sun.org.apache.xpath.internal.objects.XString;
+import com.sun.org.apache.xpath.internal.objects.XStringForChars;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
@@ -10,10 +13,13 @@ public interface LoginMapper {
 
 
     //登录
-    public Student login(@Param("id") int id, @Param("password") String password);
+    public Student login(@Param("name") String name, @Param("password") String password);
 
     //注册
     public int registered(@Param("name") String name, @Param("password") String password,@Param("picture") String picture);
+
+    // 注销
+    public int deleteUser(@Param("name") String name);
 
     //修改个人信息
     public int modifyStudent(@Param("id") int id, @Param("name") String name, @Param("password") String password,@Param("picture") String picture);
@@ -36,4 +42,15 @@ public interface LoginMapper {
     //用户名密码查询用户
     public Student userQuery(@Param("name") String  name, @Param("password") String password);
 
+    //添加讲座
+    public int addleature(@Param("lectureinfo") String  lectureinfo, @Param("classroomname") String classroomname);
+
+    //讲座修改
+    public int updateleature(@Param("lectureinfo") String  lectureinfo, @Param("classroomname") String classroomname);
+
+    //讲座删除
+    public int deleteleature(@Param("lectureinfo") String lectureinfo);
+
+    //讲座查询
+    public ArrayList<Lecture> selectlecture();
 }

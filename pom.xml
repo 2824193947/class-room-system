@@ -103,7 +103,7 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.23</version>
+      <version>5.1.40</version>
     </dependency>
     <!-- C3P0是一个开源的JDBC连接池 -->
     <dependency>

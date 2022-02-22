@@ -5,12 +5,16 @@
 <mapper namespace="com.cdzy.dao.LoginMapper">
     <!--登录-->
     <select id="login" resultType="com.cdzy.pojo.Student">
-        select * from student where id=#{id} and pwd=#{password}
+        select * from student where name=#{name} and pwd=#{password}
     </select>
     <!--注册-->
     <insert id="registered">
         insert into student(name, pwd, picture) values (#{name},#{password},#{picture})
     </insert>
+    <!--注销账号-->
+    <delete id="deleteUser">
+         delete from student where name=#{name}
+    </delete>
     <!--修改个人信息-->
     <update id="modifyStudent">
         update student set name=#{name},pwd=#{password},picture=#{picture} where id=#{id}
@@ -37,5 +41,21 @@
     </insert>
     <select id="userQuery" resultType="com.cdzy.pojo.Student">
         select * from student where name=#{name} and pwd=#{password}
+    </select>
+    <!--添加讲座-->
+    <insert id="addleature">
+        insert into lecture(lectureinfo, classroomname) values (#{lectureinfo},#{classroomname})
+    </insert>
+    <!--讲座修改-->
+    <update id="updateleature">
+        update lecture set lectureinfo=#{lectureinfo} where classroomname=#{classroomname}
+    </update>
+    <!--删除讲座-->
+    <delete id="deleteleature">
+         delete from leature where classroomname=#{classroomname}
+    </delete>
+    <!--讲座查询-->
+    <select id="selectlecture" resultType="com.cdzy.pojo.Lecture">
+        select * from lecture
     </select>
 </mapper>

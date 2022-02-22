@@ -10,9 +10,9 @@
     <!--整合mybatis-->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="user" value="root"/>
-        <property name="password" value="xzd020725"/>
+        <property name="password" value="112233"/>
         <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/classroomsystem?useUnicode=true&amp;characterEncoding=utf-8"/>
-        <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
         <property name="initialPoolSize" value="5"/>
         <property name="minPoolSize" value="5"/>
         <property name="maxPoolSize" value="20"/>
