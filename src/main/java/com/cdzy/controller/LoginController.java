@@ -1,5 +1,6 @@
 package com.cdzy.controller;
 
+import com.cdzy.pojo.Appointment;
 import com.cdzy.pojo.Classroom;
 import com.cdzy.pojo.Lecture;
 import com.cdzy.pojo.Student;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.xml.ws.RequestWrapper;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 
@@ -34,7 +37,7 @@ public class LoginController {
             //学生信息
             Student student2 = loginService.login(name,password);
             System.out.println("有人访问："+student2);
-            Student student = new Student(student2.getId(),student2.getName(),student2.getState(),student2.getPicture());
+            Student student = new Student(student2.getId(),student2.getName(),student2.getState(),student2.getPicture(), student2.getRole());
             //教室信息
             ArrayList<Classroom> list = loginService.allClassRoom();
             allInfo.put("studentInfo",student);
@@ -60,7 +63,7 @@ public class LoginController {
                 //学生信息
                 Student student2 = loginService.userQuery(name,password);
                 System.out.println(student2);
-                Student student = new Student(student2.getId(),student2.getName(),student2.getState(),student2.getPicture());
+                Student student = new Student(student2.getId(),student2.getName(),student2.getState(),student2.getPicture(), student2.getRole());
                 //教室信息
                 ArrayList<Classroom> list = loginService.allClassRoom();
                 allInfo.put("studentInfo",student);
@@ -81,9 +84,8 @@ public class LoginController {
     public String deleteUser(String name){
         try {
             loginService.deleteUser(name);
-            System.out.println("注销");
             ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.writeValueAsString("注销");
+            return objectMapper.writeValueAsString("注销成功");
         }catch (Exception e){
             return "注销失败";
         }
@@ -92,14 +94,41 @@ public class LoginController {
     //修改个人信息
     @RequestMapping("/ModifyStudent")
     @ResponseBody
-    public String ModifyStudent(int id, String name, String password,String picture){
+    public String ModifyStudent(int id, String name, String password, String oldname, String picture){
 
         try {
             loginService.modifyStudent(id,name,password,picture);
+            loginService.updateappointmentname(name, oldname);
             Student student2 = loginService.login( name,password);
-            Student student = new Student(student2.getId(),student2.getName(),student2.getState(),student2.getPicture());
+            Student student = new Student(student2.getId(),student2.getName(),student2.getState(),student2.getPicture(), student2.getRole());
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.writeValueAsString(student);
+        }catch (Exception e){
+            return "修改失败";
+        }
+    }
+
+    //修改个人信息
+    @RequestMapping("/selective")
+    @ResponseBody
+    public String selective(){
+        try {
+            ArrayList<Student> userlist = loginService.selectuser();
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(userlist);
+        }catch (Exception e){
+            return "修改失败";
+        }
+    }
+
+    //修改权限
+    @RequestMapping("/modifyRole")
+    @ResponseBody
+    public String modifyRole(String name, String role){
+        try {
+            loginService.modifyRole(name, role);
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString("修改成功");
         }catch (Exception e){
             return "修改失败";
         }
@@ -112,7 +141,7 @@ public class LoginController {
         loginService.orderClassroom(id,classRoomName);
         //学生信息
         Student student2 = loginService.studentInfo(id);
-        Student student = new Student(student2.getId(),student2.getName(),student2.getState(),student2.getPicture());
+        Student student = new Student(student2.getId(),student2.getName(),student2.getState(),student2.getPicture(), student2.getRole());
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(student);
@@ -154,11 +183,23 @@ public class LoginController {
         }
     }
 
+    @RequestMapping("/allClassRoom")
+    @ResponseBody
+    public String allClassRoom() {
+        try {
+            ArrayList<Classroom> lecture2 = loginService.allClassRoom();
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(lecture2);
+        }catch (Exception e){
+            return "查询失败";
+        }
+    }
+
     @RequestMapping("/addleature")
     @ResponseBody
-    public String addleature(String lectureinfo, String classroomname){
+    public String addleature(String lectureinfo, String classroomname, String date){
         try {
-            loginService.addleature(lectureinfo, classroomname);
+            loginService.addleature(lectureinfo, classroomname, date);
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.writeValueAsString("添加讲座成功");
         }catch (Exception e){
@@ -199,6 +240,59 @@ public class LoginController {
             return objectMapper.writeValueAsString(lecture2);
         }catch (Exception e){
             return "查询失败";
+        }
+    }
+
+    @RequestMapping("/selectlectureclass")
+    @ResponseBody
+    public String selectlectureclass(String classroomname) {
+        try {
+            ArrayList<Lecture> lecture2 = loginService.selectlectureclass(classroomname);
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(lecture2);
+        }catch (Exception e){
+            return "查询失败";
+        }
+    }
+
+    @RequestMapping("/addappointment")
+    @ResponseBody
+    public String addappointment(String name, String classroomname, String lectureinfo, String date, Boolean sign){
+        try {
+            ArrayList<Appointment> arrlist = loginService.queryappointment(name, lectureinfo, classroomname, date);
+            ObjectMapper objectMapper = new ObjectMapper();
+            if (arrlist.isEmpty()) {
+                loginService.addappointment(name, classroomname, lectureinfo, date, sign);
+                return objectMapper.writeValueAsString("预约成功");
+            } else {
+                return objectMapper.writeValueAsString("已预约");
+            }
+        }catch (Exception e){
+            return "预约失败";
+        }
+    }
+
+    @RequestMapping("/selectappointment")
+    @ResponseBody
+    public String selectappointment(String name) {
+        try {
+            ArrayList<Appointment> lecture2 = loginService.selectappointment(name);
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(lecture2);
+        }catch (Exception e){
+            return "查询失败";
+        }
+    }
+
+    @RequestMapping("/updateappointment")
+    @ResponseBody
+    public String updateappointment(String  sign, String lectureinfo, String date) {
+        try {
+            loginService.updateappointment(sign, lectureinfo, date);
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString("签到成功");
+        }catch (Exception e){
+            return "签到失败";
         }
     }
 }

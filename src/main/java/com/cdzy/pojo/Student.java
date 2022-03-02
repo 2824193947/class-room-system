@@ -8,6 +8,15 @@ public class Student {
   private String pwd;
   private String state;
   private String picture;
+  private String role;
+
+  public String getRole() {
+    return role;
+  }
+
+  public void setRole(String role) {
+    this.role = role;
+  }
 
 
   public long getId() {
@@ -54,19 +63,21 @@ public class Student {
     this.picture = picture;
   }
 
-  public Student(long id, String name, String pwd, String state, String picture) {
+  public Student(long id, String name, String pwd, String state, String picture, String role) {
     this.id = id;
     this.name = name;
     this.pwd = pwd;
     this.state = state;
     this.picture = picture;
+    this.role = role;
   }
 
-  public Student(long id, String name, String state, String picture) {
+  public Student(long id, String name, String state, String picture, String role) {
     this.id = id;
     this.name = name;
     this.state = state;
     this.picture = picture;
+    this.role = role;
   }
 
   public Student() {

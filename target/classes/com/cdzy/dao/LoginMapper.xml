@@ -19,6 +19,15 @@
     <update id="modifyStudent">
         update student set name=#{name},pwd=#{password},picture=#{picture} where id=#{id}
     </update>
+    <!--修改权限-->
+    <update id="modifyRole">
+        update student set role=#{role} where name=#{name}
+    </update>
+    <!-- 查询所有人-->
+    <select id="selectuser" resultType="com.cdzy.pojo.Student">
+        select * from student
+    </select>
+
     <!--预约教室-->
     <update id="orderClassroom">
         update student set state=#{classRoomName} where id=#{id}
@@ -26,6 +35,10 @@
     <!--查询全部教室-->
     <select id="allClassRoom" resultType="com.cdzy.pojo.Classroom">
         select * from classroom
+    </select>
+    <!--查询教室-->
+    <select id="selectClassRoom" resultType="com.cdzy.pojo.Classroom">
+        select * from classroom where classroomname=#{classRoomName}
     </select>
     <!--查询学生信息-->
     <select id="studentInfo" resultType="com.cdzy.pojo.Student">
@@ -37,14 +50,16 @@
     </update>
     <!--新增教室信息-->
     <insert id="addClassroom">
-        insert into classroom(classroomname) values (#{classRoomName})
+        insert into classroom(classroomname, floor, classroomNumber) values (#{classRoomName}, #{floor}, #{classroomNumber})
     </insert>
+
+
     <select id="userQuery" resultType="com.cdzy.pojo.Student">
         select * from student where name=#{name} and pwd=#{password}
     </select>
     <!--添加讲座-->
     <insert id="addleature">
-        insert into lecture(lectureinfo, classroomname) values (#{lectureinfo},#{classroomname})
+        insert into lecture(lectureinfo, classroomname, date) values (#{lectureinfo},#{classroomname},#{date})
     </insert>
     <!--讲座修改-->
     <update id="updateleature">
@@ -52,10 +67,39 @@
     </update>
     <!--删除讲座-->
     <delete id="deleteleature">
-         delete from leature where classroomname=#{classroomname}
+         delete from lecture where lectureinfo=#{lectureinfo}
     </delete>
+    <!--讲座查询-->
+    <select id="selectlectureclass" resultType="com.cdzy.pojo.Lecture">
+        select * from lecture where classroomname=#{classroomname}
+    </select>
     <!--讲座查询-->
     <select id="selectlecture" resultType="com.cdzy.pojo.Lecture">
         select * from lecture
     </select>
+
+    <!--讲座预约-->
+    <insert id="addappointment">
+        insert into appointment(name, classroomname, lectureinfo, date, sign) values (#{name}, #{classroomname}, #{lectureinfo},#{date}, #{sign})
+    </insert>
+
+    <!--预约查询-->
+    <select id="selectappointment" resultType="com.cdzy.pojo.Appointment">
+        select * from appointment where name=#{name}
+    </select>
+
+    <!--查询是否重复预约-->
+    <select id="queryappointment" resultType="com.cdzy.pojo.Appointment">
+        select * from appointment where name=#{name} AND date=#{date} AND lectureinfo=#{lectureinfo} AND classroomname=#{classroomname}
+    </select>
+
+    <!--签到-->
+    <update id="updateappointment">
+        update appointment set sign=#{sign} where lectureinfo=#{lectureinfo} AND date=#{date}
+    </update>
+
+    <!--签到-->
+    <update id="updateappointmentname">
+        update appointment set name=#{name} where name=#{oldname}
+    </update>
 </mapper>

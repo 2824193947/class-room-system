@@ -1,6 +1,7 @@
 package com.cdzy.service;
 
 import com.cdzy.dao.LoginMapper;
+import com.cdzy.pojo.Appointment;
 import com.cdzy.pojo.Classroom;
 import com.cdzy.pojo.Student;
 import com.cdzy.pojo.Lecture;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @Service
 public class LoginServiceImpl implements LoginService{
@@ -53,6 +55,9 @@ public class LoginServiceImpl implements LoginService{
     }
 
     @Override
+    public ArrayList<Student> selectuser() { return  loginMapper.selectuser(); }
+
+    @Override
     public int modifyClassroom(int id, String classRoomName) {
         return loginMapper.modifyClassroom(id,classRoomName);
     }
@@ -68,7 +73,10 @@ public class LoginServiceImpl implements LoginService{
     }
 
     @Override
-    public int addleature(String  lectureinfo, String classroomname) { return loginMapper.addleature(lectureinfo, classroomname); }
+    public int modifyRole(String name, String role) { return loginMapper.modifyRole(name, role); }
+
+    @Override
+    public int addleature(String  lectureinfo, String classroomname, String date) { return loginMapper.addleature(lectureinfo, classroomname, date); }
 
     @Override
     public int updateleature(String  lectureinfo, String classroomname) { return loginMapper.updateleature(lectureinfo, classroomname); }
@@ -77,5 +85,29 @@ public class LoginServiceImpl implements LoginService{
     public int deleteleature(String lectureinfo) { return loginMapper.deleteleature(lectureinfo); }
 
     @Override
+    public ArrayList<Lecture> selectlectureclass(String classroomname) { return loginMapper.selectlectureclass(classroomname); }
+
+    @Override
+    public int selectClassRoom(String classroomname) { return loginMapper.selectClassRoom(classroomname); }
+
+    @Override
     public ArrayList<Lecture> selectlecture() { return loginMapper.selectlecture(); }
+
+    @Override
+    public int addappointment(String  name, String classroomname, String  lectureinfo, String date, Boolean sign) {
+        return loginMapper.addappointment(name, classroomname, lectureinfo, date, sign);
+    };
+
+    @Override
+    public ArrayList<Appointment> selectappointment(String name) { return loginMapper.selectappointment(name); }
+
+    @Override
+    public ArrayList<Appointment> queryappointment(String name,  String  lectureinfo, String classroomname, String  date) {
+        return loginMapper.queryappointment(name, lectureinfo, classroomname, date);
+    }
+
+    @Override
+    public int updateappointment(String  sign, String lectureinfo, String date) { return loginMapper.updateappointment(sign, lectureinfo, date); }
+
+    public int updateappointmentname( String name, String oldname) {return loginMapper.updateappointmentname(name, oldname);}
 }
