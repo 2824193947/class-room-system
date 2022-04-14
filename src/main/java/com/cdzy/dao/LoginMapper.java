@@ -42,10 +42,13 @@ public interface LoginMapper {
     public Student studentInfo(@Param("id") int id);
 
     //修改教室
-    public int modifyClassroom(@Param("id") int id,@Param("classRoomName") String classRoomName);
+    public int modifyClassroom(@Param("classRoomName") String classRoomName, @Param("floor") String floor, @Param("classroomNumber") String classroomNumber);
 
     //新增教室
-    public int addClassroom(@Param("classRoomName") String classRoomName);
+    public int addClassroom(@Param("classRoomName") String classRoomName, @Param("floor") String floor, @Param("classroomNumber") String classroomNumber);
+
+    // 删除教室
+    public int deleteClassroom(@Param("classroomname") String classroomname);
 
     //用户名密码查询用户
     public Student userQuery(@Param("name") String  name, @Param("password") String password);

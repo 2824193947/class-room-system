@@ -32,27 +32,36 @@
     <update id="orderClassroom">
         update student set state=#{classRoomName} where id=#{id}
     </update>
+
     <!--查询全部教室-->
     <select id="allClassRoom" resultType="com.cdzy.pojo.Classroom">
         select * from classroom
     </select>
+
     <!--查询教室-->
     <select id="selectClassRoom" resultType="com.cdzy.pojo.Classroom">
         select * from classroom where classroomname=#{classRoomName}
     </select>
+
     <!--查询学生信息-->
     <select id="studentInfo" resultType="com.cdzy.pojo.Student">
         select * from student where id=#{id}
     </select>
+
     <!--修改教室信息-->
     <update id="modifyClassroom">
-        update classroom set classroomname=#{classRoomName} where id=#{id}
+        update classroom set classroomname=#{classRoomName},floor=#{floor},classroomNumber=#{classroomNumber} where classroomname=#{classRoomName}
     </update>
+
     <!--新增教室信息-->
     <insert id="addClassroom">
         insert into classroom(classroomname, floor, classroomNumber) values (#{classRoomName}, #{floor}, #{classroomNumber})
     </insert>
 
+    <!--删除教室-->
+    <delete id="deleteClassroom">
+         delete from classroom where classroomname=#{classroomname}
+    </delete>
 
     <select id="userQuery" resultType="com.cdzy.pojo.Student">
         select * from student where name=#{name} and pwd=#{password}

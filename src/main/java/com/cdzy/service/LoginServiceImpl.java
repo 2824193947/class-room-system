@@ -58,13 +58,18 @@ public class LoginServiceImpl implements LoginService{
     public ArrayList<Student> selectuser() { return  loginMapper.selectuser(); }
 
     @Override
-    public int modifyClassroom(int id, String classRoomName) {
-        return loginMapper.modifyClassroom(id,classRoomName);
+    public int modifyClassroom(String classRoomName, String floor, String classroomNumber) {
+        return loginMapper.modifyClassroom(classRoomName, floor, classroomNumber);
     }
 
     @Override
-    public int addClassroom(String classRoomName) {
-        return loginMapper.addClassroom(classRoomName);
+    public int addClassroom(String classRoomName, String floor, String classroomNumber) {
+        return loginMapper.addClassroom(classRoomName, floor, classroomNumber);
+    }
+
+    @Override
+    public int deleteClassroom(String classroomname) {
+        return loginMapper.deleteClassroom(classroomname);
     }
 
     @Override

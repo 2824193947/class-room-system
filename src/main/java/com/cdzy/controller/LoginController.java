@@ -154,9 +154,9 @@ public class LoginController {
     //修改教室
     @RequestMapping("/ModifyClassroom")
     @ResponseBody
-    public String modifyClassroom(int id,String classRoomName){
+    public String modifyClassroom(String classRoomName, String floor, String classroomNumber){
         ObjectMapper objectMapper = new ObjectMapper();
-        loginService.modifyClassroom(id,classRoomName);
+        loginService.modifyClassroom(classRoomName, floor, classroomNumber);
         //教室信息
         ArrayList<Classroom> list = loginService.allClassRoom();
         try {
@@ -170,13 +170,26 @@ public class LoginController {
     //新增教室
     @RequestMapping("/AddClassroom")
     @ResponseBody
-    public String addClassroom(String classRoomName){
+    public String addClassroom(String classRoomName, String floor, String classroomNumber){
         ObjectMapper objectMapper = new ObjectMapper();
-        loginService.addClassroom(classRoomName);
+        loginService.addClassroom(classRoomName, floor, classroomNumber);
         //教室信息
-        ArrayList<Classroom> list = loginService.allClassRoom();
+        // ArrayList<Classroom> list = loginService.allClassRoom();
         try {
-            return objectMapper.writeValueAsString(list);
+            return "新增成功";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "新增失败";
+        }
+    }
+
+    //删除教室
+    @RequestMapping("/deleteClassroom")
+    @ResponseBody
+    public String deleteClassroom(String classroomname){
+        loginService.deleteClassroom(classroomname);
+        try {
+            return "删除成功";
         } catch (Exception e) {
             e.printStackTrace();
             return "新增失败";
